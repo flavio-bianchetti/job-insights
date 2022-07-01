@@ -1,3 +1,6 @@
+import csv
+
+
 def get_unique_job_types(path):
     """Checks all different job types and returns a list of them
 
@@ -13,7 +16,18 @@ def get_unique_job_types(path):
     list
         List of unique job types
     """
-    return []
+    try:
+        with open(path, encoding='utf-8') as file:
+            file_reader = csv.reader(file, delimiter=',')
+            header, *data = file_reader
+            index = header.index('job_type')
+            result = []
+            for row in data:
+                if row[index] not in result:
+                    result.append(row[index])
+            return result
+    except FileNotFoundError:
+        raise FileNotFoundError("File not found")
 
 
 def filter_by_job_type(jobs, job_type):
