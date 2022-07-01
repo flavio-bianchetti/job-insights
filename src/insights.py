@@ -139,7 +139,18 @@ def get_min_salary(path):
     int
         The minimum salary paid out of all job opportunities
     """
-    pass
+    try:
+        with open(path, encoding='utf-8') as file:
+            file_reader = csv.reader(file, delimiter=',')
+            header, *data = file_reader
+            index = header.index('min_salary')
+            result = get_max_salary(path)
+            for row in data:
+                if row[index].isnumeric() and int(row[index]) < result:
+                    result = int(row[index])
+            return (result)
+    except FileNotFoundError:
+        raise FileNotFoundError("File not found")
 
 
 def matches_salary_range(job, salary):
