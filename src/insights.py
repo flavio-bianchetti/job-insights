@@ -63,7 +63,18 @@ def get_unique_industries(path):
     list
         List of unique industries
     """
-    return []
+    try:
+        with open(path, encoding='utf-8') as file:
+            file_reader = csv.reader(file, delimiter=',')
+            header, *data = file_reader
+            index = header.index('industry')
+            result = []
+            for row in data:
+                if row[index] not in result and row[index]:
+                    result.append(row[index])
+            return result
+    except FileNotFoundError:
+        raise FileNotFoundError("File not found")
 
 
 def filter_by_industry(jobs, industry):
