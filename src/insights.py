@@ -208,4 +208,20 @@ def filter_by_salary_range(jobs, salary):
     list
         Jobs whose salary range contains `salary`
     """
-    return []
+    try:
+
+        jobs_list = [
+            job
+            for job in jobs
+            if (
+                isinstance(job["min_salary"], int)
+                and isinstance(job["max_salary"], int)
+                and isinstance(salary, int)
+                and job["min_salary"] < job["max_salary"]
+            )
+        ]
+
+        return [job for job in jobs_list if matches_salary_range(job, salary)]
+
+    except KeyError:
+        raise ValueError("params required")
